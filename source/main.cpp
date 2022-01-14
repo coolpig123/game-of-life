@@ -1,0 +1,45 @@
+#include "../include/raylib.h"
+#include "../headers/functions.h"
+#include <iostream>
+#include <vector>
+using namespace std;
+int main(void)
+{
+    const int screenWidth = 1000;
+    const int screenHeight = 1000;
+    int fps = 60;
+    bool pause = true;
+    vector<pair<int,int>> grid = {};
+    InitWindow(screenWidth, screenHeight, "game-of-life");
+    SetTargetFPS(fps);          
+    while (!WindowShouldClose())   
+    {
+        BeginDrawing();
+            ClearBackground(BLACK);
+            drawGrid(grid);
+            if(!pause){
+                grid = updateGrid(grid);
+            }
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !search({GetMouseX()/10,GetMouseY()/10},grid)){
+                grid.push_back({GetMouseX()/10,GetMouseY()/10});
+            }else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && find({GetMouseX()/10,GetMouseY()/10},grid) != -1){
+                grid.erase(grid.begin()+find({GetMouseX()/10,GetMouseY()/10},grid));
+            }
+            if(IsKeyPressed(KEY_SPACE)){
+                pause = !pause;
+            }
+            if(IsKeyDown(KEY_LEFT) && fps > 1){
+                fps--;
+                SetTargetFPS(fps);
+            }else if(IsKeyDown(KEY_RIGHT)){
+                fps++;
+                SetTargetFPS(fps);
+            }
+            if(IsKeyPressed(KEY_BACKSPACE)){
+                grid.clear();
+            }
+            
+        EndDrawing();
+    }
+    CloseWindow();      
+}
