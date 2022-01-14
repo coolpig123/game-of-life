@@ -10,6 +10,7 @@ int main(void)
     int fps = 60;
     bool pause = true;
     vector<pair<int,int>> grid = {};
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, "game-of-life");
     SetTargetFPS(fps);          
     while (!WindowShouldClose())   
@@ -17,7 +18,13 @@ int main(void)
         BeginDrawing();
             ClearBackground(BLACK);
             drawGrid(grid);
-            if(!pause){
+            DrawText(TextFormat("population : %i",grid.size()),0,0,30,GREEN);
+            DrawText(TextFormat("fps : %i",fps),0,30,30,GREEN);
+            if(pause){
+                DrawText(TextFormat("paused"),0,60,30,GREEN);
+            }
+        EndDrawing();
+        if(!pause){
                 grid = updateGrid(grid);
             }
             if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !search({GetMouseX()/10,GetMouseY()/10},grid)){
@@ -28,7 +35,7 @@ int main(void)
             if(IsKeyPressed(KEY_SPACE)){
                 pause = !pause;
             }
-            if(IsKeyDown(KEY_LEFT) && fps > 1){
+            if(IsKeyDown(KEY_LEFT) && fps > 30){
                 fps--;
                 SetTargetFPS(fps);
             }else if(IsKeyDown(KEY_RIGHT)){
@@ -38,8 +45,6 @@ int main(void)
             if(IsKeyPressed(KEY_BACKSPACE)){
                 grid.clear();
             }
-            
-        EndDrawing();
     }
     CloseWindow();      
 }
