@@ -21,7 +21,7 @@ bool search(pair<int,int> i, vector<pair<int,int>> grid){
 }
 int find(pair<int,int> i, vector<pair<int,int>> grid){
     for(int j = 0;j<grid.size();j++){
-        if(grid[j].first = i.first && grid[j].second == i.second){
+        if(grid[j].first == i.first && grid[j].second == i.second){
             return j;
         }
     }
